@@ -1,0 +1,479 @@
+.
+Question 9 of 9  
+×
+Consuming NETCONF on Nexus
+NETCONF has been around for years and you finally get time to demo it for your team. You need to prepare a demo specifically around the NETCONF features the Nexus platform has. This lab will ensure that you have what it takes to get the demo done immediately.
+
+Note
+All Nexus labs for this course are using NX-OS version 7.3(1)D1(1) for the Nexus 7000. Specifically, the course is using NX-OSv which has a limited feature set, so please be aware actual API requests and response may diff on other versions of NX-OS and on other Nexus hardware platforms.
+
+Perform the following tasks to complete this challenge:
+
+Using the xmlagent Service
+
+SSH to nxosv in two different terminal sessions. One will be used for interactive CLI and the other will be used to access the xmlagent service..
+
+Enter the xmlagent service in one of the terminal windows.
+
+Using the xmlagent service, retrieve the XML response document for the show hostname command.
+
+Note
+Hint: After you send your capabilities to the switch, you can use the other terminal session to generate NETCONF request objects using the built-in NETCONF tools on the Nexus platform and paste in the request objects into the xmlagent service session.
+
+Respond to the Nexus switch after receiving the hello from the Nexus switch.
+
+Using the xmlagent service, retrieve the XML response document for the show version command.
+
+Add VLANs 20 and 30 manually using the network CLI in the other terminal session.
+
+Using the xmlagent service, retrieve the XML response document for the show vlan brief command.
+
+Add VLAN 40 using the xmlagent service.
+
+Consuming NETCONF in Python
+
+Navigate to the proper directory files/module2/lab3, open, and examine the script that is called nxos_nc_show_hostname.py. Review and execute the script.
+
+In the same directory, execute and fix the nxos_nc_show_version.py script.
+
+Create a script that configures Ethernet2/6, making it a switchport, adding the description “Configured by Python ncclient” and printing the NETCONF RPC reply as an XML string.
+
+Note
+Use the exec_command method of the device object. Also note that his method accepts a Python list.
+
+Verify that the appropriate configuration commands exist on the device.
+
+Note
+When grading this lab please be aware that only the last task will show Red if the lab was not performed correctly.
+
+Note
+If you find that a page has become unresponsive, it’s likely being caused by the “Unlock Login Keyring” prompt. You might need to scroll down to find it. Click “Cancel” on that prompt and your ability to type on the page will be restored. If you changed focus, use the Bring the device back to this window link to bring the device back into focus before you click Submit to grade.
+
+Using the xmlagent Service
+Step 1
+SSH to nxosv in two different terminal sessions. One will be used for interactive CLI and the other will be used to access the xmlagent service.
+Answer
+
+ssh cisco@nxosv 
+Do it twice from the Linux terminal in order to open two terminal sessions. Once logged in, you should see the prompt:
+nxosv# 
+Step 2
+Enter the xmlagent service in one of the terminal windows.
+Note
+In order to break out of the xmlagent service, you need to use CTRL+C.
+Answer
+
+On the first terminal, enter the xmlagent service using the command in bold below. You will get a response from the switch containing capabilities.
+
+nxosv# xmlagent
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:xml:ns:netconf:base:1.0</capability>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:validate:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:url:1.0?scheme=file</capability>
+    <capability>urn:ietf:params:netconf:capability:rollback-on-error:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:candidate:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:confirmed-commit:1.0</capability>
+  </capabilities>
+  <session-id>4277</session-id>
+</hello>
+]]>]]>
+The bottom of your terminal window will be empty. It is where you will paste the output that you will retrieve from the second terminal session.
+Step 3
+Using the xmlagent service, retrieve the XML response document for the show hostname command. Respond to the Nexus switch using the following capabilities after receiving the hello from the Nexus switch:
+Note
+After you send your capabilities to the switch, you can use the other terminal session to generate NETCONF request objects using the built-in NETCONF tools on the Nexus platform and paste in the request objects into the xmlagent service session.
+<?xml version="1.0"?>
+<nc:hello xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:capabilities>
+  <nc:capability>urn:ietf:params:xml:ns:netconf:base:1.0</nc:capability>
+  </nc:capabilities>
+</nc:hello>]]>]]>
+Answer
+
+Hit enter for a new line, but it is not required. Copy and paste your capabilities (shown below in bold) into the window right after you see ]]>]]>. The full screen will look like:
+
+nxosv# xmlagent
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <capabilities>
+    <capability>urn:ietf:params:xml:ns:netconf:base:1.0</capability>
+    <capability>urn:ietf:params:netconf:base:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:validate:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:url:1.0?scheme=file</capability>
+    <capability>urn:ietf:params:netconf:capability:rollback-on-error:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:candidate:1.0</capability>
+    <capability>urn:ietf:params:netconf:capability:confirmed-commit:1.0</capability>
+  </capabilities>
+  <session-id>4798</session-id>
+</hello>
+]]>]]><?xml version="1.0"?>
+<nc:hello xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:capabilities>
+  <nc:capability>urn:ietf:params:xml:ns:netconf:base:1.0</nc:capability>
+  </nc:capabilities>
+</nc:hello>]]>]]>
+At this point, you can copy in XML documents to send to the switch. The step requires the output of show hostname. It means that you need to first generate the request object for the hostname command from the second terminal. You can use the xmlin interactive tool or the xmlin command. You will use the pipe option.
+
+nxosv# show hostname | xmlin
+<?xml version="1.0"?>
+<nf:rpc xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:vdc_mgr" message-id="1">
+  <nf:get>
+    <nf:filter type="subtree">
+      <show>
+        <hostname/>
+      </show>
+    </nf:filter>
+  </nf:get>
+</nf:rpc>
+]]>]]>
+
+% Success
+% Success
+nxosv#
+Now copy and paste the XML object from the second terminal (do not include Success messages) into the xmlagent window. Make sure that you hit Enter. You will then see this response:
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<nf:rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:vdc_mgr" message-id="1">
+ <nf:data>
+  <show>
+   <hostname>
+    <__readonly__>
+     <hostname>nxosv.cisco.com</hostname>
+    </__readonly__>
+   </hostname>
+  </show>
+ </nf:data>
+</nf:rpc-reply>
+]]>]]>
+Step 4
+Using the xmlagent service, retrieve the XML response document for the show version command.
+Answer
+
+You can also generate the XML request document using the interactive xmlin utility. Perform the following commands from your second SSH session.
+
+nxosv# 
+nxosv# xmlin
+******************************************
+Loading the xmlin tool. Please be patient.
+******************************************
+Cisco NX-OS Software
+### output omitted ####
+nxosv(xmlin)#
+nxosv(xmlin)# show version
+<?xml version="1.0"?>
+<nf:rpc xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:sysmgrcli" message-id="1">
+  <nf:get>
+    <nf:filter type="subtree">
+      <show>
+        <version/>
+      </show>
+    </nf:filter>
+  </nf:get>
+</nf:rpc>
+]]>]]>
+
+% Success
+% Success
+nxosv(xmlin)#
+After copying and pasting the object that is shown back into the xmlagent service, you should see this output:
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<nf:rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:sysmgrcli" message-id="1">
+ <nf:data>
+  <show>
+   <version>
+    <__readonly__>
+     <header_str>Cisco Nexus Operating System (NX-OS) Software
+TAC support: http://www.cisco.com/tac
+Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
+Copyright (c) 2002-2016, Cisco Systems, Inc. All rights reserved.
+The copyrights to certain works contained herein are owned by
+other third parties and are used and distributed under license.
+Some parts of this software are covered under the GNU Public
+License. A copy of the license is available at
+http://www.gnu.org/licenses/gpl.html.
+
+NX-OSv is a demo version of the Nexus Operating System
+</header_str>
+     <loader_ver_str>N/A</loader_ver_str>
+     <kickstart_ver_str>7.3(1)D1(1) [build 7.3(1)D1(0.10)]</kickstart_ver_str>
+     <sys_ver_str>7.3(1)D1(1) [build 7.3(1)D1(0.10)]</sys_ver_str>
+     <kick_file_name>bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin</kick_file_name>
+     <kick_cmpl_time> 1/11/2016 16:00:00</kick_cmpl_time>
+     <kick_tmstmp>02/22/2016 23:39:33</kick_tmstmp>
+     <isan_file_name>bootflash:///titanium-d1.7.3.1.D1.0.10.bin</isan_file_name>
+     <isan_cmpl_time> 1/11/2016 16:00:00</isan_cmpl_time>
+     <isan_tmstmp>02/23/2016 01:43:36</isan_tmstmp>
+     <chassis_id>NX-OSv Chassis</chassis_id>
+     <module_id>NX-OSv Supervisor Module</module_id>
+     <cpu_name>Intel(R) Xeon(R) CPU E5-2670</cpu_name>
+     <memory>4002312</memory>
+     <mem_type>kB</mem_type>
+     <proc_board_id>TM29D1D533B</proc_board_id>
+     <host_name>nxosv</host_name>
+     <bootflash_size>1582402</bootflash_size>
+     <kern_uptm_days>2</kern_uptm_days>
+     <kern_uptm_hrs>20</kern_uptm_hrs>
+     <kern_uptm_mins>20</kern_uptm_mins>
+     <kern_uptm_secs>30</kern_uptm_secs>
+     <manufacturer>Cisco Systems, Inc.</manufacturer>
+    </__readonly__>
+   </version>
+  </show>
+ </nf:data>
+</nf:rpc-reply>
+]]>]]>
+Step 5
+Using the xmlagent service, retrieve the XML response document for the show vlan brief command.
+Note
+Add VLANs 20 and 30 manually using the network CLI (using the other terminal session) prior to executing this step.
+Answer
+
+First, you should have manually added VLANs 20 and 30. After obtaining the XML request document for the show vlan brief command and sending it to the switch, you should see this output:
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<nf:rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:vlan_mgr_cli" message-id="1">
+ <nf:data>
+  <show>
+   <vlan>
+    <brief>
+     <__readonly__>
+      <TABLE_vlanbriefxbrief>
+       <ROW_vlanbriefxbrief>
+        <vlanshowbr-vlanid>16777216</vlanshowbr-vlanid>
+        <vlanshowbr-vlanid-utf>1</vlanshowbr-vlanid-utf>
+        <vlanshowbr-vlanname>default</vlanshowbr-vlanname>
+        <vlanshowbr-vlanstate>active</vlanshowbr-vlanstate>
+        <vlanshowbr-shutstate>noshutdown</vlanshowbr-shutstate>
+       </ROW_vlanbriefxbrief>
+       <ROW_vlanbriefxbrief>
+        <vlanshowbr-vlanid>167772160</vlanshowbr-vlanid>
+        <vlanshowbr-vlanid-utf>10</vlanshowbr-vlanid-utf>
+        <vlanshowbr-vlanname>VLAN0010</vlanshowbr-vlanname>
+        <vlanshowbr-vlanstate>active</vlanshowbr-vlanstate>
+        <vlanshowbr-shutstate>noshutdown</vlanshowbr-shutstate>
+       </ROW_vlanbriefxbrief>
+       <ROW_vlanbriefxbrief>
+        <vlanshowbr-vlanid>335544320</vlanshowbr-vlanid>
+        <vlanshowbr-vlanid-utf>20</vlanshowbr-vlanid-utf>
+        <vlanshowbr-vlanname>VLAN0020</vlanshowbr-vlanname>
+        <vlanshowbr-vlanstate>active</vlanshowbr-vlanstate>
+        <vlanshowbr-shutstate>noshutdown</vlanshowbr-shutstate>
+       </ROW_vlanbriefxbrief>
+       <ROW_vlanbriefxbrief>
+        <vlanshowbr-vlanid>503316480</vlanshowbr-vlanid>
+        <vlanshowbr-vlanid-utf>30</vlanshowbr-vlanid-utf>
+        <vlanshowbr-vlanname>VLAN0030</vlanshowbr-vlanname>
+        <vlanshowbr-vlanstate>active</vlanshowbr-vlanstate>
+        <vlanshowbr-shutstate>noshutdown</vlanshowbr-shutstate>
+       </ROW_vlanbriefxbrief>
+      </TABLE_vlanbriefxbrief>
+     </__readonly__>
+    </brief>
+   </vlan>
+  </show>
+ </nf:data>
+</nf:rpc-reply>
+]]>]]>
+Step 6
+Add VLAN 40 using the xmlagent service.
+Answer
+
+First, you need to obtain the XML request object to add VLAN 40. Use the interactive xmlin tool.
+
+nxosv(xmlin)# 
+nxosv(xmlin)# config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+nxosv(config)(xmlin)# vlan 40
+% Success
+% Success
+nxosv(config-vlan)(xmlin)# end
+<?xml version="1.0"?>
+<nf:rpc xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:configure_" xmlns:m="http://www.cisco.com/nxos:7.3.1.D1.1.:_exec" message-id="1">
+  <nf:edit-config>
+    <nf:target>
+      <nf:running/>
+    </nf:target>
+    <nf:config>
+      <m:configure>
+        <m:terminal>
+          <vlan>
+            <__XML__PARAM__vlan-id-create-delete>
+              <__XML__value>40</__XML__value>
+            </__XML__PARAM__vlan-id-create-delete>
+          </vlan>
+        </m:terminal>
+      </m:configure>
+    </nf:config>
+  </nf:edit-config>
+</nf:rpc>
+]]>]]>
+
+nxosv(xmlin)#
+After copying and pasting the object back into the xmlagent session, you will see this response confirming it was OK:
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<nf:rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nxos:7.3.1.D1.1.:configure_" xmlns:m="http://www.cisco.com/nxos:7.3.1.D1.1.:_exec" message-id="1">
+  <nf:ok/>
+</nf:rpc-reply>
+]]>]]>
+Consuming NETCONF in Python
+Step 7
+Navigate to the proper directory files/module2/lab3, open, and examine the script that is called nxos_nc_show_hostname.py. Review and execute the script.
+Note
+Pay special attention to namespaces and URLs.
+Answer
+
+$ python nc_show_hostname.py
+Response as XML String: 
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:if="http://www.cisco.com/nxos:1.0:if_manager" xmlns:nfcli="http://www.cisco.com/nxos:1.0:nfcli" xmlns:nxos="http://www.cisco.com/nxos:1.0" xmlns:vlan_mgr_cli="http://www.cisco.com/nxos:1.0:vlan_mgr_cli" xmlns:mod="http://www.cisco.com/nxos:1.0:vdc_mgr" message-id="urn:uuid:b11f6d76-4db6-11e6-8b11-080027cee472">
+ <data>
+  <mod:show>
+   <mod:__XML__BLK_Cmd_SHOW_HOSTNAME_hostname>
+    <mod:__XML__OPT_Cmd_SHOW_HOSTNAME___readonly__>
+     <mod:__readonly__>
+      <mod:hostname>nxosv.cisco.com</mod:hostname>
+     </mod:__readonly__>
+    </mod:__XML__OPT_Cmd_SHOW_HOSTNAME___readonly__>
+   </mod:__XML__BLK_Cmd_SHOW_HOSTNAME_hostname>
+  </mod:show>
+ </data>
+</rpc-reply>
+=================================
+Hostname:  nxosv.cisco.com
+Step 8
+In the same directory, execute and fix the nc_show_version.py script.
+Note
+Pay special attention to namespaces and URLs.
+Answer
+
+Script Output:
+
+#!/usr/bin/env python
+
+from ncclient import manager
+
+if __name__ == '__main__':
+
+    with manager.connect(host='nxosv', port=22, username='cisco', password='cisco',
+                         hostkey_verify=False, device_params={'name': 'nexus'},
+                         allow_agent=False, look_for_keys=False) as device:
+
+        get_filter = """
+                      <show>
+                        <version>
+                        </verison>
+                      </show>
+                      """
+        nc_get_reply = device.get(('subtree', get_filter))
+        print 'Response as XML String: '
+        print nc_get_reply.xml
+
+        ns_map = {'mod': 'http://www.cisco.com/nxos:1.0:sysmgrcli'}
+        xml_rsp_cid = nc_get_reply.data_ele.find('.//mod:chassis_id', ns_map)
+        cid_value = xml_rsp_cid.text
+        xml_rsp_sw = nc_get_reply.data_ele.find('.//mod:sys_ver_str', ns_map)
+        sw_value = xml_rsp_sw.text
+
+        print '================================='
+        print 'Chassis ID: ', cid_value
+        print 'Software Version: ', sw_value
+Solution Script:
+$ python nc_show_version.py
+Response as XML String: 
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:if="http://www.cisco.com/nxos:1.0:if_manager" xmlns:nfcli="http://www.cisco.com/nxos:1.0:nfcli" xmlns:nxos="http://www.cisco.com/nxos:1.0" xmlns:vlan_mgr_cli="http://www.cisco.com/nxos:1.0:vlan_mgr_cli" xmlns:mod="http://www.cisco.com/nxos:1.0:sysmgrcli" message-id="urn:uuid:6b917998-4db6-11e6-9d80-080027cee472">
+ <data>
+  <mod:show>
+   <mod:version>
+    <mod:__XML__OPT_Cmd_sysmgr_show_version___readonly__>
+     <mod:__readonly__>
+      <mod:header_str>Cisco Nexus Operating System (NX-OS) Software
+TAC support: http://www.cisco.com/tac
+Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
+Copyright (c) 2002-2016, Cisco Systems, Inc. All rights reserved.
+The copyrights to certain works contained herein are owned by
+other third parties and are used and distributed under license.
+Some parts of this software are covered under the GNU Public
+License. A copy of the license is available at
+http://www.gnu.org/licenses/gpl.html.
+
+NX-OSv is a demo version of the Nexus Operating System
+</mod:header_str>
+      <mod:loader_ver_str>N/A</mod:loader_ver_str>
+      <mod:kickstart_ver_str>7.3(1)D1(1) [build 7.3(1)D1(0.10)]</mod:kickstart_ver_str>
+      <mod:sys_ver_str>7.3(1)D1(1) [build 7.3(1)D1(0.10)]</mod:sys_ver_str>
+      <mod:kick_file_name>bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin</mod:kick_file_name>
+      <mod:kick_cmpl_time> 1/11/2016 16:00:00</mod:kick_cmpl_time>
+      <mod:kick_tmstmp>02/22/2016 23:39:33</mod:kick_tmstmp>
+      <mod:isan_file_name>bootflash:///titanium-d1.7.3.1.D1.0.10.bin</mod:isan_file_name>
+      <mod:isan_cmpl_time> 1/11/2016 16:00:00</mod:isan_cmpl_time>
+      <mod:isan_tmstmp>02/23/2016 01:43:36</mod:isan_tmstmp>
+      <mod:chassis_id>NX-OSv Chassis</mod:chassis_id>
+      <mod:module_id>NX-OSv Supervisor Module</mod:module_id>
+      <mod:cpu_name>Intel(R) Xeon(R) CPU E5-2670</mod:cpu_name>
+      <mod:memory>4002312</mod:memory>
+      <mod:mem_type>kB</mod:mem_type>
+      <mod:proc_board_id>TM29D1D533B</mod:proc_board_id>
+      <mod:host_name>nxosv</mod:host_name>
+      <mod:bootflash_size>1582402</mod:bootflash_size>
+      <mod:kern_uptm_days>2</mod:kern_uptm_days>
+      <mod:kern_uptm_hrs>21</mod:kern_uptm_hrs>
+      <mod:kern_uptm_mins>1</mod:kern_uptm_mins>
+      <mod:kern_uptm_secs>51</mod:kern_uptm_secs>
+      <mod:manufacturer>Cisco Systems, Inc.</mod:manufacturer>
+     </mod:__readonly__>
+    </mod:__XML__OPT_Cmd_sysmgr_show_version___readonly__>
+   </mod:version>
+  </mod:show>
+ </data>
+</rpc-reply>
+=================================
+Chassis ID:  NX-OSv Chassis
+Software Version:  7.3(1)D1(1) [build 7.3(1)D1(0.10)]
+
+Step 9
+Create a script that configures Ethernet2/6. The script should make it a switchport and add a description “Configured by Python ncclient”. Finally, it should print the NETCONF RPC reply as an XML string.
+Note
+Use the exec_command method of the device object. Also note that his method accepts a Python list.
+Answer
+
+$ python nc_config_interface.py
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rpc-reply xmlns:if="http://www.cisco.com/nxos:1.0:if_manager" xmlns:nfcli="http://www.cisco.com/nxos:1.0:nfcli" xmlns:nxos="http://www.cisco.com/nxos:1.0" xmlns:vlan_mgr_cli="http://www.cisco.com/nxos:1.0:vlan_mgr_cli" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="urn:uuid:15587fb6-4db8-11e6-b064-080027cee472">
+  <ok/>
+</rpc-reply>
+Complete Script:
+#!/usr/bin/env python
+
+from ncclient import manager
+
+if __name__ == '__main__':
+
+    with manager.connect(host='nxosv', port=22, username='cisco', password='cisco',
+                         hostkey_verify=False, device_params={'name': 'nexus'},
+                         allow_agent=False, look_for_keys=False) as device:
+
+        commands = ['config t', 'interface Ethernet2/6', 'switchport', 'description Configured by Python ncclient']
+        nc_config_reply = device.exec_command(commands)
+        print nc_config_reply.xml
+Missing VLAN or interface configurations.
+Submit
+Previous Page  Next Page
+Terms & Conditions Privacy Statement Cookie Policy EULA Trademarks Keyboard Shortcuts
+Devices
+Scenario
+Hints
+This device is connected in a separate window.
+Switch to Device Window
+Bring the device back to this window.
+Desktop Devices
+Workstation 
+Console Devices
+Internet-Rtr
+nxosv
+Grading your work
+This might take some time.
+
