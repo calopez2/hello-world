@@ -87,6 +87,7 @@ show run inter lo100
 step 7
 Navigate to the files/module2/lab5 directory and execute a script xe_rc_static_routes.py. 
 Troubleshoot and fix this script so that it address the expected static routes.
+When troubleshooting the xe_rc_static_routes.py script, make sure you find any mistakes in Content-Type and make sure the body of the request is properly formatted.
 
 #!/usr/bin/env python
 
